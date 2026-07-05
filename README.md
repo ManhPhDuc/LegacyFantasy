@@ -23,7 +23,7 @@ The game is playable in the browser through a Unity WebGL build.
 
 Play the WebGL demo here:
 
-**Itch.io:** `PASTE_YOUR_ITCH_IO_LINK_HERE`
+**Itch.io:** `https://phamducmanh.itch.io/legacy-fantasy`
 
 ---
 

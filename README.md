@@ -1,14 +1,14 @@
 What I Learned
 Through this project, I practiced:
 
-Building a complete Unity 2D gameplay loop
-Organizing C# scripts by responsibility
-Working with Unity physics and collision detection
-Using Animator for player and enemy animation
-Creating simple UI systems for HP, score, win, and game over states
-Managing audio through an AudioManager
-Building and publishing a Unity WebGL game
-Preparing a game project for GitHub and portfolio presentation
+- Building a complete Unity 2D gameplay loop
+- Organizing C# scripts by responsibility.
+- Working with Unity physics and collision detection.
+- Using Animator for player and enemy animation.
+- Creating simple UI systems for HP, score, win, and game over states.
+- Managing audio through an AudioManager.
+- Building and publishing a Unity WebGL game.
+- Preparing a game project for GitHub and portfolio presentation.
 
 # LegacyFantasy
 

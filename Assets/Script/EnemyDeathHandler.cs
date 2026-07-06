@@ -20,12 +20,35 @@ public class EnemyDeathHandler : MonoBehaviour
 
     private void Awake()
     {
-        if (health == null) health = GetComponent<Health>();
-        if (enemyPatrol == null) enemyPatrol = GetComponent<EnemyPatrol>();
-        if (damageDealer == null) damageDealer = GetComponent<DamageDealer>();
-        if (animator == null) animator = GetComponent<Animator>();
-        if (rb == null) rb = GetComponent<Rigidbody2D>();
-        if (enemyCollider == null) enemyCollider = GetComponent<Collider2D>();
+        if (health == null)
+        {
+            health = GetComponent<Health>();
+        }
+
+        if (enemyPatrol == null)
+        {
+            enemyPatrol = GetComponent<EnemyPatrol>();
+        }
+
+        if (damageDealer == null)
+        {
+            damageDealer = GetComponent<DamageDealer>();
+        }
+
+        if (animator == null)
+        {
+            animator = GetComponent<Animator>();
+        }
+
+        if (rb == null)
+        {
+            rb = GetComponent<Rigidbody2D>();
+        }
+
+        if (enemyCollider == null)
+        {
+            enemyCollider = GetComponent<Collider2D>();
+        }
     }
 
     private void OnEnable()
@@ -63,6 +86,7 @@ public class EnemyDeathHandler : MonoBehaviour
         if (rb != null)
         {
             rb.velocity = Vector2.zero;
+            rb.angularVelocity = 0f;
             rb.bodyType = RigidbodyType2D.Kinematic;
         }
 
@@ -75,7 +99,7 @@ public class EnemyDeathHandler : MonoBehaviour
         {
             animator.SetBool(deadParameterName, true);
         }
-        
+
         if (AudioManager.Instance != null)
         {
             AudioManager.Instance.PlayEnemyDeathSound();

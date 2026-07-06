@@ -9,8 +9,16 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private Transform attackPoint;
     [SerializeField] private LayerMask enemyLayer;
 
-    [Header("Animation")]
+    [Header("Attack Point Position")]
+    [SerializeField] private float attackPointX = 0.8f;
+    [SerializeField] private float attackPointY = 0.05f;
+
+    [Header("References")]
     [SerializeField] private Animator animator;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Health playerHealth;
+
+    [Header("Animation")]
     [SerializeField] private string attackTriggerName = "attack";
 
     private float nextAttackTime;
@@ -21,10 +29,27 @@ public class PlayerAttack : MonoBehaviour
         {
             animator = GetComponent<Animator>();
         }
+
+        if (spriteRenderer == null)
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        }
+
+        if (playerHealth == null)
+        {
+            playerHealth = GetComponent<Health>();
+        }
     }
 
     private void Update()
     {
+        UpdateAttackPointPosition();
+
+        if (playerHealth != null && playerHealth.IsDead)
+        {
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.J) && Time.time >= nextAttackTime)
         {
             Attack();
@@ -32,13 +57,29 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
+    private void UpdateAttackPointPosition()
+    {
+        if (attackPoint == null || spriteRenderer == null) return;
+
+        float facingDirection = spriteRenderer.flipX ? -1f : 1f;
+
+        attackPoint.localPosition = new Vector3(
+            facingDirection * attackPointX,
+            attackPointY,
+            0f
+        );
+    }
+
     private void Attack()
     {
+        if (attackPoint == null) return;
+
         if (animator != null)
         {
+            animator.ResetTrigger(attackTriggerName);
             animator.SetTrigger(attackTriggerName);
         }
-        
+
         if (AudioManager.Instance != null)
         {
             AudioManager.Instance.PlayPlayerAttackSound();
@@ -61,10 +102,14 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         if (attackPoint == null) return;
 
+        Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(attackPoint.position, 0.05f);
     }
 }

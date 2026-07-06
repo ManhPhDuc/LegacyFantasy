@@ -6,8 +6,10 @@ public class PlayerDeathHandler : MonoBehaviour
     [Header("References")]
     [SerializeField] private Health health;
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private PlayerAttack playerAttack;
     [SerializeField] private Animator animator;
     [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private Collider2D playerCollider;
     [SerializeField] private GameOverUI gameOverUI;
 
     [Header("Animation")]
@@ -15,6 +17,7 @@ public class PlayerDeathHandler : MonoBehaviour
 
     [Header("Death Settings")]
     [SerializeField] private bool stopMovementOnDeath = true;
+    [SerializeField] private bool disableColliderOnDeath = false;
     [SerializeField] private float gameOverDelay = 1f;
 
     private bool isDead;
@@ -31,6 +34,11 @@ public class PlayerDeathHandler : MonoBehaviour
             playerController = GetComponent<PlayerController>();
         }
 
+        if (playerAttack == null)
+        {
+            playerAttack = GetComponent<PlayerAttack>();
+        }
+
         if (animator == null)
         {
             animator = GetComponent<Animator>();
@@ -39,6 +47,11 @@ public class PlayerDeathHandler : MonoBehaviour
         if (rb == null)
         {
             rb = GetComponent<Rigidbody2D>();
+        }
+
+        if (playerCollider == null)
+        {
+            playerCollider = GetComponent<Collider2D>();
         }
     }
 
@@ -69,9 +82,21 @@ public class PlayerDeathHandler : MonoBehaviour
             playerController.enabled = false;
         }
 
+        if (playerAttack != null)
+        {
+            playerAttack.enabled = false;
+        }
+
         if (stopMovementOnDeath && rb != null)
         {
             rb.velocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+            rb.bodyType = RigidbodyType2D.Kinematic;
+        }
+
+        if (disableColliderOnDeath && playerCollider != null)
+        {
+            playerCollider.enabled = false;
         }
 
         if (animator != null)
@@ -80,6 +105,7 @@ public class PlayerDeathHandler : MonoBehaviour
             animator.SetBool("isJump", false);
             animator.SetBool(deadParameterName, true);
         }
+
         if (AudioManager.Instance != null)
         {
             AudioManager.Instance.PlayPlayerDeathSound();
